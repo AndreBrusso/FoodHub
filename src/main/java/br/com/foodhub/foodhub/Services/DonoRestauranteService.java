@@ -6,7 +6,11 @@ import br.com.foodhub.foodhub.dtos.UsuarioResquestDTO;
 import br.com.foodhub.foodhub.entities.DonoRestaurante;
 import br.com.foodhub.foodhub.exceptions.RecursoNaoEncontradoException;
 import br.com.foodhub.foodhub.repositories.DonoRestauranteRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class DonoRestauranteService {
 
     private final DonoRestauranteRepository donoRepository;
@@ -31,7 +35,7 @@ public class DonoRestauranteService {
         return UsuarioResponseDTO.from(donoRepository.save(dono));
     }
 
-    public UsuarioResponseDTO atualizarCliente(Long id, UsuarioResponseDTO dto) {
+    public UsuarioResponseDTO atualizarDono(Long id, UsuarioResquestDTO dto) {
         var dono = donoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Id não encontrado: " + id));
         if (!dono.getEmail().equals(dto.email())) {
@@ -47,7 +51,14 @@ public class DonoRestauranteService {
         return UsuarioResponseDTO.from(donoRepository.save(dono));
     }
 
-    public void deletarCliente(Long id) {
+    public List<UsuarioResponseDTO> buscarPorNome(String nome) {
+        return donoRepository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(UsuarioResponseDTO::from)
+                .toList();
+    }
+
+    public void deletarDono(Long id) {
         if (!donoRepository.existsById(id)) {
             throw new RecursoNaoEncontradoException("Dono não encontrado com id: " + id);
         }
@@ -58,7 +69,7 @@ public class DonoRestauranteService {
 
     public void alterarSenha(Long id, AlterarSenhaDTO dto) {
         if (!donoRepository.existsById(id)) {
-            throw new RecursoNaoEncontradoException("Cliente não encontrado com id: " + id);
+            throw new RecursoNaoEncontradoException("Dono não encontrado com id: " + id);
         }
         usuarioService.alterarSenha(id, dto);
     }

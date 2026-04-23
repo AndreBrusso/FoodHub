@@ -26,7 +26,7 @@ public class UsuarioService {
 
     public void validarEmailDisponivel(String email) {
         if (usuarioRepository.existsByEmail(email)){
-            throw new EmailJaCadastradoException(email);
+            throw new EmailJaCadastradoException("Email ja cadastrado " + email);
         }
     }
 
@@ -56,6 +56,14 @@ public class UsuarioService {
         usuario.setSenha(passwordEncoder.encode(dto.novaSenha()));
         usuario.setDataUltAlteracao(LocalDate.now());
         usuarioRepository.save(usuario);
+    }
+
+    public void validarLogin(String login, String senha){
+        var usuario = usuarioRepository.findByLogin(login)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Login não encontrado"));
+        if (!passwordEncoder.matches(senha, usuario.getSenha())) {
+            throw new SenhaInvalidaExpecption("Senha incorreta");
+        }
     }
 
 }

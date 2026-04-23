@@ -6,7 +6,11 @@ import br.com.foodhub.foodhub.dtos.UsuarioResquestDTO;
 import br.com.foodhub.foodhub.entities.Cliente;
 import br.com.foodhub.foodhub.exceptions.RecursoNaoEncontradoException;
 import br.com.foodhub.foodhub.repositories.ClienteRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
@@ -31,7 +35,7 @@ public class ClienteService {
         return UsuarioResponseDTO.from(clienteRepository.save(cliente));
     }
 
-    public UsuarioResponseDTO atualizarCliente(Long id, UsuarioResponseDTO dto) {
+    public UsuarioResponseDTO atualizarCliente(Long id, UsuarioResquestDTO dto) {
         var cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Id não encontrado: " + id));
 
@@ -55,6 +59,14 @@ public class ClienteService {
 
         clienteRepository.deleteById(id);
     }
+
+    public List<UsuarioResponseDTO> buscarPorNome(String nome) {
+        return clienteRepository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .map(UsuarioResponseDTO::from)
+                .toList();
+    }
+
 
     public void alterarSenha(Long id, AlterarSenhaDTO dto) {
         if (!clienteRepository.existsById(id)) {

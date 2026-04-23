@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionsHandler extends RuntimeException {
+public class GlobalExceptionsHandler {
 
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<Map<String, Object>> handleNaoEncontrado(RecursoNaoEncontradoException ex) {
@@ -24,6 +24,7 @@ public class GlobalExceptionsHandler extends RuntimeException {
         return buildResponde(HttpStatus.CONFLICT, ex.getMessage());
     }
 
+    @ExceptionHandler(SenhaInvalidaExpecption.class)
     public ResponseEntity<Map<String, Object>> handleSenhaInvalida(SenhaInvalidaExpecption ex) {
         return buildResponde(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
