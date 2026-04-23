@@ -23,8 +23,13 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST, "/clientes").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/donos").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
+                    req.requestMatchers(HttpMethod.GET, "/**").permitAll();
+                    req.requestMatchers(HttpMethod.PUT, "/**").permitAll();
+                    req.requestMatchers(HttpMethod.DELETE, "/**").permitAll();
                     req.requestMatchers("/error").permitAll();
                     req.anyRequest().authenticated();
+
+
                 })
                 .build();
     }

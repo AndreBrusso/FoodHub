@@ -1,6 +1,7 @@
 package br.com.foodhub.foodhub.Services;
 
 import br.com.foodhub.foodhub.dtos.AlterarSenhaDTO;
+import br.com.foodhub.foodhub.dtos.AtualizarUsuarioDTO;
 import br.com.foodhub.foodhub.dtos.UsuarioResponseDTO;
 import br.com.foodhub.foodhub.dtos.UsuarioResquestDTO;
 import br.com.foodhub.foodhub.entities.DonoRestaurante;
@@ -35,15 +36,26 @@ public class DonoRestauranteService {
         return UsuarioResponseDTO.from(donoRepository.save(dono));
     }
 
-    public UsuarioResponseDTO atualizarDono(Long id, UsuarioResquestDTO dto) {
+    public UsuarioResponseDTO atualizarDono(Long id, AtualizarUsuarioDTO dto) {
         var dono = donoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Id não encontrado: " + id));
         if (!dono.getEmail().equals(dto.email())) {
             usuarioService.validarEmailDisponivel(dto.email());
         }
 
+        if (dto.email() != null && !dono.getEmail().equals(dto.email())) {
+            usuarioService.validarEmailDisponivel(dto.email());
+        }
+
+        if (dto.senha() != null) {
+            throw new IllegalArgumentException( "Não é possível alterar a senha por este endpoint. Use endpoint de senha ");
+        }
+
         dono.setNome(dto.nome());
-        dono.setEmail(dto.email());
+
+        if (dto.email() != null) {
+            dono.setEmail(dto.email());
+        }
         dono.setLogin(dto.login());
         dono.setEndereco(dto.endereco());
         dono.setDataUltAlteracao(usuarioService.dataAtual());

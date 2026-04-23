@@ -2,6 +2,7 @@ package br.com.foodhub.foodhub.controllers;
 
 import br.com.foodhub.foodhub.Services.ClienteService;
 import br.com.foodhub.foodhub.dtos.AlterarSenhaDTO;
+import br.com.foodhub.foodhub.dtos.AtualizarUsuarioDTO;
 import br.com.foodhub.foodhub.dtos.UsuarioResponseDTO;
 import br.com.foodhub.foodhub.dtos.UsuarioResquestDTO;
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarCliente(
             @PathVariable("id") long id,
-            @Valid @RequestBody UsuarioResquestDTO dto
+            @Valid @RequestBody AtualizarUsuarioDTO dto
     ) {
         logger.info("Recebendo requisição para atualizar cliente: " + dto);
         return ResponseEntity.ok(clienteService.atualizarCliente(id, dto));
