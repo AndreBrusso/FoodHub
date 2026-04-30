@@ -26,6 +26,8 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.GET, "/**").permitAll();
                     req.requestMatchers(HttpMethod.PUT, "/**").permitAll();
                     req.requestMatchers(HttpMethod.DELETE, "/**").permitAll();
+                    req.requestMatchers(HttpMethod.PATCH, "/clientes/*/senha").permitAll();
+                    req.requestMatchers(HttpMethod.PATCH, "/donos/*/senha").permitAll();
                     req.requestMatchers("/error").permitAll();
                     req.anyRequest().authenticated();
 

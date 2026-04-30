@@ -49,7 +49,7 @@ public class UsuarioService {
         if (!dto.novaSenha().equals(dto.confirmaSenha())) {
             throw new SenhaInvalidaExpecption("A nova senha e a confirmação não coincidem");
         }
-        if (!passwordEncoder.matches(dto.novaSenha(), usuario.getSenha())) {
+        if (passwordEncoder.matches(dto.novaSenha(), usuario.getSenha())) {
             throw new SenhaInvalidaExpecption("A senha deve ser diferente da atual");
         }
 
